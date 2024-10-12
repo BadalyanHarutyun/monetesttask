@@ -4,6 +4,7 @@ https://docs.nestjs.com/providers#services
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Friend } from 'src/database/entities/friend.entity';
 import { FriendRequest } from 'src/database/entities/friendRequest.entity';
 import { User } from 'src/database/entities/user.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -15,6 +16,8 @@ export class FriendService {
     private friendRequestRepository: Repository<FriendRequest>,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectRepository(Friend)
+    private friendRepository: Repository<Friend>,
   ) {}
 
   async sendFriendRequest(data: Partial<FriendRequest>): Promise<void> {
@@ -44,5 +47,8 @@ export class FriendService {
         return false
     }
     return true
+  }
+  async createFriend(data:Partial<Friend>):Promise<Friend> {
+    return await this.friendRepository.save(data)
   }
 }

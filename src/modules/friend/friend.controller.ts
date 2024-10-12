@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Delete, Get, Param, Post, Request, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Request, Res, UseGuards } from '@nestjs/common';
 import { SendFriendRequestDto } from 'src/common/dtos/sendFriendRequest.dto';
 import { FriendService } from './friend.service';
 import { Response } from 'express';
@@ -37,6 +37,16 @@ export class FriendController {
         if(!isFriendRequestExist) {
             return res.status(400).send({detail:'please enter valid id'})
         }
+        await this.friendService.declineUser(param.id,req.user)
+        res.send({message:'success'})
+    }
+    @Put('confirm/:id')
+    async confirm(@Request() req,@Res() res:Response,@Param() param:DeclineUserRequestDto ) {
+        const isFriendRequestExist = await this.friendService.checkFriendRequest(param.id,req.user)
+        if(!isFriendRequestExist) {
+            return res.status(400).send({detail:'please enter valid id'})
+        }
+        
         await this.friendService.declineUser(param.id,req.user)
         res.send({message:'success'})
     }

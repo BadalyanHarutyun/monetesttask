@@ -3,23 +3,23 @@ https://docs.nestjs.com/providers#services
 */
 
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
+import { configs } from 'src/config';
 import { User } from 'src/database/entities/user.entity';
 import { Repository } from 'typeorm';
 @Injectable()
 export class AuthService {
     constructor(
-    private configService: ConfigService, @InjectRepository(User)
+    @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService
 
 ){}
 
    async hashPassword(password:string):Promise<string> {
-    return await bcrypt.hash(password,+this.configService.get('SALT_AROUND'))
+    return await bcrypt.hash(password,configs.SALT_AROUND)
    }
    async comparePassword(password:string,hashPassword:string):Promise<boolean> {
     return await bcrypt.compare(password,hashPassword)
