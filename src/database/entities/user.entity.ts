@@ -4,7 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
+import { FriendRequest } from './friendRequest.entity';
 
 @Entity('users')
 export class User {
@@ -32,4 +36,7 @@ export class User {
     const {password,...rest} = this
     return rest
   }
+  @OneToMany(() => FriendRequest, (friendRequest) => friendRequest.senduser)
+  @JoinColumn({name:'id',referencedColumnName:'sender_id'})
+  whichUserSend:FriendRequest[]
 }
