@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
   imports: [TypeOrmModule.forFeature([User]), JwtModule.register({
     global: true,
     secret: 'secret', //new ConfigService().get('JWT_SECRET'),
-    signOptions: { expiresIn: '60s' },
+    signOptions: { expiresIn: '5h' },
   }),],
   controllers: [AuthController],
   providers: [AuthService],

@@ -5,8 +5,11 @@ import {
     UnauthorizedException,
   } from '@nestjs/common';
   import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
  
   import { Request } from 'express';
+import { User } from 'src/database/entities/user.entity';
+import { Repository } from 'typeorm';
   
   @Injectable()
   export class AuthGuard implements CanActivate {
@@ -25,10 +28,12 @@ import {
             secret:'secret'
           }
         );
+        const user =payload.id
         // 💡 We're assigning the payload to the request object here
         // so that we can access it in our route handlers
-        request['user'] = payload;
-      } catch {
+        request['user'] = user;
+      } catch(err) {
+        console.log(222,err)
         throw new UnauthorizedException();
       }
       return true;
