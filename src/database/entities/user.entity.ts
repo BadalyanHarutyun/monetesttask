@@ -28,4 +28,8 @@ export class User {
   createdAt: Date;
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+  toJSON() {
+    const {password,...rest} = this
+    return rest
+  }
 }
